@@ -6,11 +6,11 @@ from UF import *
 cam0_path = r'data_collection_d435_win\images\\'  # 记得路径最好加上 "\\" 结尾
 count = 0  # 初始化计数器
 
-
+# 回调函数
 def callback(frame):
     # define picture down coefficient of ratio
     scaling_factor = 1.0
-    global count
+    global count # 全局计数器
 
     cv_img = cv2.resize(frame, None, fx=scaling_factor, fy=scaling_factor, interpolation=cv2.INTER_AREA)
     cv2.imshow("Capture_Video", cv_img)  # 窗口显示
@@ -19,6 +19,7 @@ def callback(frame):
     if k == ord('s'):  # 若检测到按键 ‘s’
         pose_ = arm.get_pose()  # 获取机械臂状态
 
+        # 保存机械臂位姿
         with open(r'data_collection_d435_win\images\poses.txt', 'a+') as f:
             pose_ = [str(i) for i in pose_]
             new_line = f'{",".join(pose_)}\n'
@@ -31,10 +32,10 @@ def callback(frame):
 
         count += 1
 
-
+# 显示D435相机图像
 def displayD435():
-    pipeline = rs.pipeline()
-    config = rs.config()
+    pipeline = rs.pipeline() # 创建管道
+    config = rs.config() # 创建配置
     config.enable_stream(rs.stream.color, 1280, 720, rs.format.bgr8, 30)
     pipeline.start(config)
 
