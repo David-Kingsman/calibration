@@ -13,7 +13,7 @@ from save_poses import poses_main
 
 from scipy.spatial.transform import Rotation as R
 
-
+# 设置输出精度
 np.set_printoptions(precision=8,suppress=True)
 
 iamges_path = r'C:\Users\DengTeam\Desktop\calibration\data_collection_d435_win\images' #手眼标定采集的标定版图片所在路径
