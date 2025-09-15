@@ -1,6 +1,6 @@
 # 机器人手眼标定项目
 
-这是一个基于Intel RealSense D435相机的机器人手眼标定项目，支持眼在手内和眼在手外两种标定模式。
+这是一个基于Intel RealSense D435相机 的 UFACTORY XARM 机器人手眼标定 项目，支持眼在手内和眼在手外两种标定模式。
 
 ![项目概览](assets/0.jpg)
 *机器人手眼标定系统概览*
@@ -10,16 +10,16 @@
 ```
 calibration/
 ├── API/                          # API模块
-│   └── UF.py                     # 机械臂控制API
+│   └── UF.py                     # UFACTORY XARM 机械臂控制 API
 ├── data_collection_d435_win/     # 数据采集模块
 │   ├── main.py                   # 主采集程序
-│   └── images/                   # 采集的标定板图像
-├── eye_in_hand_homogeneous_matrix/  # 眼在手内标定
+│   └── images/                   # 采集的标定板图像合集
+├── eye_in_hand_homogeneous_matrix/  # 眼在手内标定（相机安装在机械臂末端（手部））
 │   ├── main.py                   # 眼在手内标定主程序
 │   ├── camera_data.py            # 相机数据处理
 │   ├── save_poses.py             # 位姿保存模块
 │   └── RobotToolPose.csv         # 机械臂末端位姿数据
-├── out_of_hand_homogeneous_matrix/ # 眼在手外标定
+├── out_of_hand_homogeneous_matrix/ # 眼在手外标定 （相机固定安装在工作台上（手外））
 │   ├── main.py                   # 眼在手外标定主程序
 │   ├── camera_data.py            # 相机数据处理
 │   ├── save_poses2.py            # 位姿保存模块
