@@ -16,8 +16,8 @@ from save_poses2 import poses2_main
 
 np.set_printoptions(precision=8,suppress=True)
 
-images_path = 'data_collection_d435_win\images' #手眼标定采集的标定版图片所在路径
-file_path = 'data_collection_d435_win\images\poses.txt'   #采集标定板图片时对应的机械臂末端的位姿 从 第一行到最后一行 需要和采集的标定板的图片顺序进行对应
+images_path = 'data_collection_d435_win/images' #手眼标定采集的标定版图片所在路径
+file_path = 'data_collection_d435_win/images/poses.txt'   #采集标定板图片时对应的机械臂末端的位姿 从 第一行到最后一行 需要和采集的标定板的图片顺序进行对应
 
 
 def func():
@@ -79,7 +79,7 @@ def func():
     # print("ret:", ret)
     print("内参矩阵:\n", mtx) # 内参数矩阵
     print("畸变系数:\n", dist)  # 畸变系数   distortion cofficients = (k_1,k_2,p_1,p_2,k_3)
-    np.savetxt('data_collection_d435_win\images\CameraIntrinsics.txt', mtx, delimiter=' ')
+    np.savetxt('data_collection_d435_win/images/CameraIntrinsics.txt', mtx, delimiter=' ')
 
     print("-----------------------------------------------------")
 
@@ -99,7 +99,7 @@ def func():
     print(t)
     Camera2End = np.concatenate((np.concatenate((R, t), axis=1),np.array([[0, 0, 0, 1]])), axis=0)
     print(Camera2End)
-    np.savetxt('data_collection_d435_win\images\Camera2End.txt', Camera2End, delimiter=' ')
+    np.savetxt('data_collection_d435_win/images/Camera2End.txt', Camera2End, delimiter=' ')
     return Camera2End
 
 

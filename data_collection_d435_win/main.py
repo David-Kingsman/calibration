@@ -3,7 +3,7 @@ import cv2
 import pyrealsense2 as rs
 from UF import *
 
-cam0_path = r'data_collection_d435_win\images\\'  # 记得路径最好加上 "\\" 结尾
+cam0_path = r'data_collection_d435_win/images/' 
 count = 0  # 初始化计数器
 
 # 回调函数
@@ -20,7 +20,7 @@ def callback(frame):
         pose_ = arm.get_pose()  # 获取机械臂状态
 
         # 保存机械臂位姿
-        with open(r'data_collection_d435_win\images\poses.txt', 'a+') as f:
+        with open(r'data_collection_d435_win/images/poses.txt', 'a+') as f:
             pose_ = [str(i) for i in pose_]
             new_line = f'{",".join(pose_)}\n'
             f.write(new_line)

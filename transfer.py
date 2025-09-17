@@ -1,5 +1,5 @@
-input_file = "poses.txt"
-output_file = "poses_1.txt"
+input_file = "data_collection_d435_win/images/poses.txt"
+output_file = "poses_m.txt"
 
 with open(input_file, "r") as f_in, open(output_file, "w") as f_out:
     for line in f_in:
