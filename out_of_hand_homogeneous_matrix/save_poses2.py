@@ -8,6 +8,7 @@
 
 import csv
 import numpy as np
+
 # 打开文本文件
 def poses2_main(tag_file):
     with open(tag_file, "r", encoding="utf-8") as f:
