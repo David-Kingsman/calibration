@@ -19,7 +19,6 @@ class UF():
         angles = convert.bytes_to_fp32s(data[7:35], 7)
         return angles
 
-
 if __name__ == '__main__':
     arm = UF()
     poses = arm.get_pose()
