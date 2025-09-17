@@ -11,19 +11,19 @@ import numpy as np
 
 # 打开文本文件
 def poses2_main(tag_file):
-    with open(tag_file, "r", encoding="utf-8") as f:
-        lines = f.readlines()
+    with open(tag_file, "r", encoding="utf-8") as f: # 读取文件
+        lines = f.readlines() 
 
-    lines = [float(i) for line in lines for i in line.split(',')]
+    lines = [float(i) for line in lines for i in line.split(',')] # 将每一行的字符串转换为浮点数并存储在一个列表中
 
     matrices = []
     for i in range(0, len(lines), 6):
-        matrices.append(inverse_transformation_matrix(pose_to_homogeneous_matrix(lines[i:i+6])))
+        matrices.append(inverse_transformation_matrix(pose_to_homogeneous_matrix(lines[i:i+6]))) # 将位姿转换为齐次变换矩阵并求逆
 
-    save_matrices_to_csv(matrices, 'RobotToolPose.csv')
+    save_matrices_to_csv(matrices, 'RobotToolPose.csv') 
 
+# 计算旋转矩阵
 def euler_angles_to_rotation_matrix(rx, ry, rz):
-    # 计算旋转矩阵
     Rx = np.array([[1, 0, 0],
                    [0, np.cos(rx), -np.sin(rx)],
                    [0, np.sin(rx), np.cos(rx)]])
@@ -39,7 +39,7 @@ def euler_angles_to_rotation_matrix(rx, ry, rz):
     R = Rz@Ry@Rx  # 先绕 z轴旋转 再绕y轴旋转  最后绕x轴旋转
     return R
 
-
+# 将位姿转换为齐次变换矩阵
 def pose_to_homogeneous_matrix(pose):
     x, y, z, rx, ry, rz = pose
     R = euler_angles_to_rotation_matrix(rx, ry, rz)
@@ -51,6 +51,7 @@ def pose_to_homogeneous_matrix(pose):
 
     return H
 
+# 计算齐次变换矩阵的逆
 def inverse_transformation_matrix(T):
     R = T[:3, :3]
     t = T[:3, 3]
@@ -68,7 +69,7 @@ def inverse_transformation_matrix(T):
 
     return T_inv
 
-
+# 将多个齐次变换矩阵保存到CSV文件中
 def save_matrices_to_csv(matrices, file_name):
     rows, cols = matrices[0].shape
     num_matrices = len(matrices)
