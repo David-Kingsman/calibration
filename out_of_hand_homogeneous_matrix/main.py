@@ -16,9 +16,10 @@ from save_poses2 import poses2_main
 
 np.set_printoptions(precision=8,suppress=True)
 
-images_path = 'data_collection_d435_win/images' #手眼标定采集的标定版图片所在路径
-file_path = 'data_collection_d435_win/images/poses.txt'   #采集标定板图片时对应的机械臂末端的位姿 从 第一行到最后一行 需要和采集的标定板的图片顺序进行对应
+images_path = 'data_collection_d435_win/images'
 
+#采集标定板图片时对应的机械臂末端的位姿 从 第一行到最后一行 需要和采集的标定板的图片顺序进行对应
+file_path = 'data_collection_d435_win/images/poses.txt'   
 
 def func():
 
@@ -27,7 +28,7 @@ def func():
     # 角点的个数以及棋盘格间距
     XX = 10 #标定板的中长度对应的角点的个数
     YY = 7  #标定板的中宽度对应的角点的个数
-    L =0.014 #标定板一格的长度  单位为米
+    L =0.014 #标定板一格的长度,单位为米
 
     # 设置寻找亚像素角点的参数，采用的停止准则是最大循环次数30和最大误差容限0.001
     criteria = (cv2.TERM_CRITERIA_MAX_ITER | cv2.TERM_CRITERIA_EPS, 30, 0.001)
@@ -68,9 +69,6 @@ def func():
                 else:
                     img_points.append(corners)
 
-
-
-
     N = len(img_points)
 
     # 标定,得到图案在相机坐标系下的位姿
@@ -85,7 +83,6 @@ def func():
 
 
     # 机器人末端在基座标系下的位姿
-
     poses2_main(file_path)
     tool_pose = np.loadtxt(r'RobotToolPose.csv',delimiter=',')
     R_tool = []
@@ -101,8 +98,6 @@ def func():
     print(Camera2End)
     np.savetxt('data_collection_d435_win/images/Camera2End.txt', Camera2End, delimiter=' ')
     return Camera2End
-
-
 
 # 旋转矩阵
 Camera2End_Matrix = func()
