@@ -1,267 +1,265 @@
-# 机器人手眼标定项目
+# Robot Hand-Eye Calibration Project
 
-这是一个基于Intel RealSense D435相机 的 UFACTORY XARM 机器人手眼标定 项目，支持眼在手内和眼在手外两种标定模式。
+This is a hand-eye calibration project for UFACTORY XARM robots using the Intel RealSense D435 camera. It supports both Eye-in-Hand and Eye-to-Hand calibration modes.
 
-![项目概览](assets/0.jpg)
-*机器人手眼标定系统概览*
+![Project Overview](assets/0.jpg)
+*Overview of the robot hand-eye calibration system*
 
-## 项目结构
+## Project Structure
 
 ```
 calibration/
-├── API/                          # API模块
-│   └── UF.py                     # UFACTORY XARM 机械臂控制 API
-├── data_collection_d435_win/     # 数据采集模块
-│   ├── main.py                   # 主采集程序
-│   └── images/                   # 采集的标定板图像合集
-├── eye_in_hand_homogeneous_matrix/  # 眼在手内标定（相机安装在机械臂末端（手部））
-│   ├── main.py                   # 眼在手内标定主程序
-│   ├── camera_data.py            # 相机数据处理
-│   ├── save_poses.py             # 位姿保存模块
-│   └── RobotToolPose.csv         # 机械臂末端位姿数据
-├── out_of_hand_homogeneous_matrix/ # 眼在手外标定 （相机固定安装在工作台上（手外））
-│   ├── main.py                   # 眼在手外标定主程序
-│   ├── camera_data.py            # 相机数据处理
-│   ├── save_poses2.py            # 位姿保存模块
-│   └── RobotToolPose.csv         # 机械臂末端位姿数据
-├── test.py                       # 相机内参测试程序
-├── transfer.py                   # 数据转换工具
-└── README.md                     # 项目说明文档
+├── API/                          # API module
+│   └── UF.py                     # UFACTORY XARM robot control API
+├── data_collection_d435_win/     # Data collection module
+│   ├── main.py                   # Main data collection script
+│   └── images/                   # Collected calibration board images
+├── eye_in_hand_homogeneous_matrix/  # Eye-in-Hand calibration (camera mounted on robot end-effector)
+│   ├── main.py                   # Eye-in-Hand calibration script
+│   ├── camera_data.py            # Camera data processing
+│   ├── save_poses.py             # Pose saving module
+│   └── RobotToolPose.csv         # Robot end-effector pose data
+├── out_of_hand_homogeneous_matrix/ # Eye-to-Hand calibration (camera fixed on the workspace)
+│   ├── main.py                   # Eye-to-Hand calibration script
+│   ├── camera_data.py            # Camera data processing
+│   ├── save_poses2.py            # Pose saving module
+│   └── RobotToolPose.csv         # Robot end-effector pose data
+├── test.py                       # Camera intrinsic test script
+├── transfer.py                   # Data conversion tool
+└── README.md                     # Project documentation
 ```
 
-## 功能特性
+## Features
 
-### 1. 数据采集
-- 使用Intel RealSense D435相机进行实时图像采集
-- 支持按's'键保存图像和对应的机械臂位姿
-- 自动生成标定板图像序列和位姿文件
+### 1. Data Collection
+- Real-time image capture using Intel RealSense D435
+- Save images and corresponding robot poses by pressing 's'
+- Automatically generates calibration board image sequences and pose files
 
-### 2. 眼在手内标定 (Eye-in-Hand)
-- 计算相机坐标系相对于机械臂末端坐标系的变换矩阵
-- 使用OpenCV的`calibrateHandEye`函数
-- 支持TSAI算法进行手眼标定
+### 2. Eye-in-Hand Calibration
+- Computes the transformation matrix from the camera to the robot end-effector
+- Uses OpenCV's `calibrateHandEye` function
+- Supports the TSAI algorithm for hand-eye calibration
 
-### 3. 眼在手外标定 (Eye-to-Hand)
-- 计算相机坐标系相对于机械臂基座坐标系的变换矩阵
-- 同样使用OpenCV的`calibrateHandEye`函数
-- 适用于相机固定安装的场景
+### 3. Eye-to-Hand Calibration
+- Computes the transformation matrix from the camera to the robot base
+- Also uses OpenCV's `calibrateHandEye` function
+- Suitable for scenarios where the camera is fixed
 
-### 4. 相机内参标定
-- 自动计算相机内参矩阵和畸变系数
-- 支持棋盘格标定板
-- 可配置标定板参数（角点数量、格子大小等）
+### 4. Camera Intrinsic Calibration
+- Automatically computes camera intrinsic matrix and distortion coefficients
+- Supports chessboard calibration boards
+- Configurable board parameters (number of corners, square size, etc.)
 
-## 环境准备
+## Environment Setup
 
-### 系统要求
+### System Requirements
 - Windows 10/11
 - Python 3.7+
-- Intel RealSense D435相机
-- xArm机械臂（或其他兼容机械臂）
+- Intel RealSense D435 camera
+- xArm robot (or other compatible robots)
 
-### 硬件连接
-1. **相机连接**：将RealSense D435通过USB 3.0连接到电脑
-2. **机械臂连接**：确保机械臂通过以太网连接到同一网络
-3. **标定板准备**：准备棋盘格标定板（见标定板配置部分）
+### Hardware Connections
+1. **Camera**: Connect the RealSense D435 to the PC via USB 3.0
+2. **Robot**: Ensure the robot is connected to the same network via Ethernet
+3. **Calibration Board**: Prepare a chessboard calibration board (see board configuration section)
 
-## 详细安装步骤
+## Installation Steps
 
-### 1. 克隆项目
+### 1. Clone the Project
 ```bash
 git clone https://github.com/David-Kingsman/calibration.git
 cd calibration
 ```
 
-### 2. 安装Python依赖
+### 2. Install Python Dependencies
 ```bash
-# 安装基础依赖
+# Basic dependencies
 pip install numpy opencv-python scipy
 
-# 安装RealSense SDK
+# RealSense SDK
 pip install pyrealsense2
 
-# 如果上述命令失败，请先安装RealSense SDK：
-# 1. 下载并安装Intel RealSense SDK
-# 2. 然后运行：pip install pyrealsense2
+# If the above fails, install RealSense SDK first:
+# 1. Download and install Intel RealSense SDK
+# 2. Then run: pip install pyrealsense2
 ```
 
-### 3. 验证安装
+### 3. Verify Installation
 ```bash
-# 测试相机连接
+# Test camera connection
 python test.py
 
-# 如果看到相机参数输出，说明安装成功
+# If you see camera parameter output, installation is successful
 ```
 
-## 完整标定流程
+## Full Calibration Workflow
 
-### 步骤1: 数据采集
+### Step 1: Data Collection
 
-#### 1.1 准备标定板
-- **眼在手内标定**：11×8棋盘格，30mm格子大小
-- **眼在手外标定**：10×7棋盘格，14mm格子大小
-- 确保标定板平整，无折痕，角点清晰
+#### 1.1 Prepare Calibration Board
+- **Eye-in-Hand**: 11×8 chessboard, 30mm square size
+- **Eye-to-Hand**: 10×7 chessboard, 14mm square size
+- Ensure the board is flat, undamaged, and corners are clear
 
-#### 1.2 启动数据采集
+#### 1.2 Start Data Collection
 ```bash
 cd data_collection_d435_win
 python main.py
 ```
 
-#### 1.3 采集操作指南
-1. 程序启动后会显示相机画面
-2. 将标定板放在相机视野内
-3. 调整机械臂到不同位置和角度
-4. 按 **'s'** 键保存当前图像和位姿
-5. 重复步骤3-4，建议采集20-50张图像
-6. 按 **'q'** 键退出程序
+#### 1.3 Collection Instructions
+1. The program will display the camera feed
+2. Place the calibration board in the camera view
+3. Move the robot to different positions and orientations
+4. Press **'s'** to save the current image and pose
+5. Repeat steps 3-4; 20-50 images are recommended
+6. Press **'q'** to exit
 
-#### 1.4 验证采集结果
+#### 1.4 Verify Collected Data
 ```bash
-# 检查采集的图像
+# Check collected images
 ls data_collection_d435_win/images/
 
-# 检查位姿文件
+# Check pose file
 cat data_collection_d435_win/images/poses.txt
 ```
 
-### 步骤2: 眼在手内标定
+### Step 2: Eye-in-Hand Calibration
 
-#### 2.1 运行标定程序
+#### 2.1 Run Calibration Script
 ```bash
 cd eye_in_hand_homogeneous_matrix
 python main.py
 ```
 
-#### 2.2 检查输出结果
-程序运行后会输出：
-- 相机内参矩阵
-- 畸变系数
-- 手眼变换矩阵
+#### 2.2 Check Output
+The script outputs:
+- Camera intrinsic matrix
+- Distortion coefficients
+- Hand-eye transformation matrix
 
-#### 2.3 验证结果文件
+#### 2.3 Verify Output Files
 ```bash
-# 检查生成的文件
+# Check generated files
 ls data_collection_d435_win/images/
-# 应该看到：CameraIntrinsics.txt, Camera2End.txt
+# Should see: CameraIntrinsics.txt, Camera2End.txt
 ```
 
-### 步骤3: 眼在手外标定
+### Step 3: Eye-to-Hand Calibration
 
-#### 3.1 运行标定程序
+#### 3.1 Run Calibration Script
 ```bash
 cd out_of_hand_homogeneous_matrix
 python main.py
 ```
 
-#### 3.2 检查输出结果
-程序运行后会输出：
-- 相机内参矩阵
-- 畸变系数
-- 手眼变换矩阵
+#### 3.2 Check Output
+The script outputs:
+- Camera intrinsic matrix
+- Distortion coefficients
+- Hand-eye transformation matrix
 
-### 步骤4: 结果验证
+### Step 4: Result Verification
 
-#### 4.1 测试相机内参
+#### 4.1 Test Camera Intrinsics
 ```bash
 cd ..
 python test.py
 ```
 
-#### 4.2 检查所有输出文件
+#### 4.2 Check All Output Files
 ```bash
-# 检查相机内参
+# Camera intrinsics
 cat data_collection_d435_win/images/CameraIntrinsics.txt
 
-# 检查手眼变换矩阵
+# Hand-eye transformation matrix
 cat data_collection_d435_win/images/Camera2End.txt
 
-# 检查位姿数据
+# Pose data
 cat data_collection_d435_win/images/poses.txt
 ```
 
-## 标定板配置
+## Calibration Board Configuration
 
-| 标定模式 | 棋盘格尺寸 | 格子大小 | 用途 |
-|----------|------------|----------|------|
-| 眼在手内 | 11×8 | 30mm | 相机安装在机械臂末端 |
-| 眼在手外 | 10×7 | 14mm | 相机固定安装在工作台 |
+| Mode        | Chessboard Size | Square Size | Usage                        |
+|-------------|----------------|-------------|------------------------------|
+| Eye-in-Hand | 11×8           | 30mm        | Camera on robot end-effector |
+| Eye-to-Hand | 10×7           | 14mm        | Camera fixed on workspace    |
 
-## 输出结果说明
+## Output Description
 
-### 文件结构
+### File Structure
 ```
 data_collection_d435_win/images/
-├── 0.jpg, 1.jpg, ..., N.jpg     # 采集的标定板图像
-├── poses.txt                     # 机械臂位姿数据
-├── CameraIntrinsics.txt          # 相机内参矩阵
-└── Camera2End.txt               # 手眼变换矩阵
+├── 0.jpg, 1.jpg, ..., N.jpg     # Collected calibration images
+├── poses.txt                    # Robot pose data
+├── CameraIntrinsics.txt         # Camera intrinsic matrix
+└── Camera2End.txt               # Hand-eye transformation matrix
 ```
 
-### 数据格式
-- **poses.txt**: 每行包含6个数值 [x, y, z, rx, ry, rz]
-- **CameraIntrinsics.txt**: 3×3相机内参矩阵
-- **Camera2End.txt**: 4×4齐次变换矩阵
+### Data Formats
+- **poses.txt**: Each line contains 6 values [x, y, z, rx, ry, rz]
+- **CameraIntrinsics.txt**: 3×3 camera intrinsic matrix
+- **Camera2End.txt**: 4×4 homogeneous transformation matrix
 
-## 常见问题解决
+## Troubleshooting
 
-### 1. 相机连接问题
+### 1. Camera Connection Issues
 ```bash
-# 问题：无法检测到RealSense相机
-# 解决步骤：
-# 1. 检查USB连接（确保使用USB 3.0端口）
-# 2. 重新安装RealSense SDK
-# 3. 重启电脑
-# 4. 运行测试程序验证
+# Issue: RealSense camera not detected
+# Steps:
+# 1. Check USB connection (use USB 3.0)
+# 2. Reinstall RealSense SDK
+# 3. Restart the computer
+# 4. Run the test script
 python test.py
 ```
 
-### 2. 机械臂连接问题
+### 2. Robot Connection Issues
 ```bash
-# 问题：无法连接到机械臂
-# 解决步骤：
-# 1. 检查网络连接
-# 2. 修改API/UF.py中的IP地址
-# 3. 确保机械臂处于可控制状态
-# 4. 测试连接
+# Issue: Cannot connect to robot
+# Steps:
+# 1. Check network connection
+# 2. Edit IP address in API/UF.py
+# 3. Ensure robot is controllable
+# 4. Test connection
 python -c "from API.UF import UF; arm = UF(); print(arm.get_pose())"
 ```
 
-### 3. 角点检测失败
+### 3. Chessboard Corner Detection Failure
 ```bash
-# 问题：无法检测到标定板角点
-# 解决步骤：
-# 1. 确保标定板平整，无折痕
-# 2. 调整光照条件，避免反光
-# 3. 检查标定板参数设置
-# 4. 确保标定板完全在相机视野内
-# 5. 尝试不同的角度和距离
+# Issue: Cannot detect chessboard corners
+# Steps:
+# 1. Ensure the board is flat and undamaged
+# 2. Adjust lighting to avoid glare
+# 3. Check calibration board parameters
+# 4. Make sure the board is fully in view
+# 5. Try different angles and distances
 ```
 
-### 4. 标定精度低
+### 4. Low Calibration Accuracy
 ```bash
-# 问题：标定结果精度不高
-# 解决步骤：
-# 1. 增加采集图像数量（建议30-50张）
-# 2. 确保机械臂位姿多样性
-# 3. 检查标定板质量
-# 4. 验证角点检测准确性
-# 5. 重新进行数据采集
+# Issue: Low calibration accuracy
+# Steps:
+# 1. Collect more images (30-50 recommended)
+# 2. Ensure diverse robot poses
+# 3. Check calibration board quality
+# 4. Verify corner detection accuracy
+# 5. Re-collect data if needed
 ```
 
-## 调试技巧
+## Debugging Tips
 
-### 1. 检查数据质量
+### 1. Check Data Quality
 ```python
-# 在标定前检查角点检测结果
+# Check chessboard corner detection before calibration
 import cv2
 import numpy as np
 
-# 读取图像
 img = cv2.imread('data_collection_d435_win/images/0.jpg')
 gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
-# 检测角点
 ret, corners = cv2.findChessboardCorners(gray, (11, 8), None)
 if ret:
     cv2.drawChessboardCorners(img, (11, 8), corners, ret)
@@ -270,47 +268,45 @@ if ret:
     cv2.destroyAllWindows()
 ```
 
-### 2. 验证位姿数据
+### 2. Verify Pose Data
 ```python
-# 检查机械臂位姿数据格式
+# Check robot pose data format
 import numpy as np
 
-# 读取位姿数据
 poses = np.loadtxt('data_collection_d435_win/images/poses.txt', delimiter=',')
-print(f"位姿数据形状: {poses.shape}")
-print(f"第一个位姿: {poses[0]}")
+print(f"Pose data shape: {poses.shape}")
+print(f"First pose: {poses[0]}")
 ```
 
-### 3. 标定结果验证
+### 3. Validate Calibration Results
 ```python
-# 检查变换矩阵的有效性
+# Check transformation matrix validity
 import numpy as np
 
-# 读取变换矩阵
 camera2end = np.loadtxt('data_collection_d435_win/images/Camera2End.txt')
 R = camera2end[:3, :3]
 t = camera2end[:3, 3]
 
-print(f"旋转矩阵行列式: {np.linalg.det(R)}")
-print(f"平移向量: {t}")
-print(f"变换矩阵:\n{camera2end}")
+print(f"Rotation matrix determinant: {np.linalg.det(R)}")
+print(f"Translation vector: {t}")
+print(f"Transformation matrix:\n{camera2end}")
 ```
 
-## 技术原理
+## Technical Principle
 
-手眼标定基于以下方程：
-- 眼在手内：A₂⁻¹ × A₁ × X = X × B₂ × B₁⁻¹
-- 眼在手外：A₂⁻¹ × A₁ × X = X × B₂ × B₁⁻¹
+Hand-eye calibration is based on the following equations:
+- Eye-in-Hand: A₂⁻¹ × A₁ × X = X × B₂ × B₁⁻¹
+- Eye-to-Hand: A₂⁻¹ × A₁ × X = X × B₂ × B₁⁻¹
 
-其中：
-- A₁, A₂：机械臂末端在不同位置的变换矩阵
-- B₁, B₂：标定板在相机坐标系下的变换矩阵
-- X：待求解的手眼变换矩阵
+Where:
+- A₁, A₂: Robot end-effector transformation matrices at different positions
+- B₁, B₂: Calibration board transformation matrices in the camera frame
+- X: The hand-eye transformation matrix to be solved
 
-## 许可证
+## License
 
-本项目仅供学习和研究使用。
+This project is for learning and research purposes only.
 
-## 作者
+## Author
 
-机器人视觉标定项目
+Robot Vision Calibration Project
