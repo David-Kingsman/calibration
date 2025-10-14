@@ -18,6 +18,12 @@ class UF():
         data = self.sock.read(timeout=1)
         angles = convert.bytes_to_fp32s(data[7:35], 7)
         return angles
+    
+    # 控制机械臂末端pose
+    def set_pose(self, pose, speed=100, mvacc=1000):
+        cmd = f'MOVEJ X{pose[0]} Y{pose[1]} Z{pose[2]} RX{pose[3]} RY{pose[4]} RZ{pose[5]} V{speed} A{mvacc}\n'
+        self.sock.write(cmd.encode())
+        return
 
 if __name__ == '__main__':
     arm = UF()
