@@ -36,7 +36,7 @@ if __name__ == "__main__":
     ROBOT = "xarm6"                 # "xarm6" | "lite6" |
     IP    = "192.168.1.235"                    # None → use default for ROBOT
 
-    central_pose = [333.84437993, -125.8113633, 269.37551534, -179.1, -1.8, -95.1]   # for xarm6
+    central_pose = [435.19,-42.39, 261.645 , -179.1, -1.8, -95.1]   # for xarm6
 
     # import pdb; pdb.set_trace()
     main(robot=ROBOT, ip=IP, pose=central_pose)
