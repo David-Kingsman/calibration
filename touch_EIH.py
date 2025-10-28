@@ -85,6 +85,10 @@ def main():
                     print(f"Clicked pixel ({x_orig},{y_orig})")
                     print(f"Camera coords: {point_cloud_value}, Distance: {distance:.2f} mm")
                     print(f"Base coords: {point_in_base[:3]}")
+                    target_point_offset_100mm = point_in_base[:3] + np.array([0, 0, 100])
+                    print(f"Target point (offset 100mm): {target_point_offset_100mm}")
+                    
+
 
                     point_info = (x_click, y_click, distance, point_in_base[:3])
                 else:

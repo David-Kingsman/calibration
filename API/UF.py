@@ -1,6 +1,7 @@
 
 from xarm.core.comm import SocketPort
 from xarm.core.utils import convert
+from xarm.wrapper import XArmAPI
 
 class UF():
     # 初始化
